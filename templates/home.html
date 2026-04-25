@@ -141,7 +141,6 @@ font-weight:bold;
 
 <body>
 
-
 <div class="header">
 
 <h2>PrimeCart</h2>
@@ -153,7 +152,6 @@ font-weight:bold;
 </div>
 
 </div>
-
 
 <div class="search-box">
 
@@ -169,7 +167,6 @@ font-weight:bold;
 
 </div>
 
-
 {% if query %}
 
 <h2 style="padding-left:40px">Search Results for "{{ query }}"</h2>
@@ -180,7 +177,11 @@ font-weight:bold;
 
 <div class="card">
 
+{% if product.image %}
 <img src="{{ product.image.url }}">
+{% else %}
+<img src="https://via.placeholder.com/200">
+{% endif %}
 
 <h3>{{ product.name }}</h3>
 
@@ -202,7 +203,6 @@ font-weight:bold;
 
 {% endif %}
 
-
 <h2 style="padding-left:40px">Shop by Categories</h2>
 
 <div class="categories">
@@ -213,7 +213,11 @@ font-weight:bold;
 
 <div class="category-card">
 
+{% if category.image %}
 <img src="{{ category.image.url }}">
+{% else %}
+<img src="https://via.placeholder.com/250x180">
+{% endif %}
 
 <h3>{{ category.name }}</h3>
 
@@ -224,7 +228,6 @@ font-weight:bold;
 {% endfor %}
 
 </div>
-
 
 <script>
 
