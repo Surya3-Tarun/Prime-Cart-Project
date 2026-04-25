@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Products</title>
+
+<style>
+
+body{
+font-family:Arial;
+}
+
+.filter-box{
+padding:20px;
+}
+
+.container{
+display:flex;
+flex-wrap:wrap;
+gap:30px;
+padding:40px;
+}
+
+.card{
+border:1px solid #ddd;
+padding:20px;
+width:250px;
+text-align:center;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:200px;
+height:200px;
+object-fit:cover;
+}
+
+button{
+padding:10px;
+background:black;
+color:white;
+border:none;
+cursor:pointer;
+width:100%;
+margin-top:10px;
+}
+
+input, select{
+padding:8px;
+margin-right:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2 style="padding:20px">Products</h2>
+
+
+<!-- FILTERS -->
+
+<div class="filter-box">
+
+<form method="GET">
+
+<input type="number" name="min_price" placeholder="Min Price">
+
+<input type="number" name="max_price" placeholder="Max Price">
+
+<select name="sort">
+
+<option value="">Sort</option>
+
+<option value="low">Price Low → High</option>
+
+<option value="high">Price High → Low</option>
+
+<option value="new">Newest</option>
+
+</select>
+
+<button type="submit">Apply</button>
+
+</form>
+
+</div>
+
+
+<div class="container">
+
+{% for product in products %}
+
+<div class="card">
+
+<img src="{{ product.image.url }}">
+
+<h3>{{ product.name }}</h3>
+
+<p>₹ {{ product.price }}</p>
+
+<a href="/product/{{ product.id }}/">
+<button>View Product</button>
+</a>
+
+<a href="/add-to-cart/{{ product.id }}/">
+<button>Add to Cart</button>
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+</html>

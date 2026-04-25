@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>{{ product.name }}</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:40px;
+background:#f5f5f5;
+}
+
+.container{
+display:flex;
+gap:60px;
+max-width:1100px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* IMAGE ZOOM */
+.zoom-container{
+width:400px;
+overflow:hidden;
+border-radius:10px;
+}
+
+.zoom-container img{
+width:100%;
+transition:transform 0.4s ease;
+}
+
+.zoom-container:hover img{
+transform:scale(1.5);
+cursor:zoom-in;
+}
+
+.product-info h1{
+margin-bottom:10px;
+}
+
+.rating{
+color:orange;
+font-size:18px;
+margin-bottom:10px;
+}
+
+.price{
+color:green;
+font-size:28px;
+font-weight:bold;
+margin:10px 0;
+}
+
+.stock{
+font-size:16px;
+margin-bottom:10px;
+}
+
+.out-stock{
+color:red;
+font-weight:bold;
+}
+
+button{
+padding:12px;
+margin-top:10px;
+background:black;
+color:white;
+border:none;
+cursor:pointer;
+width:220px;
+border-radius:5px;
+}
+
+button:hover{
+background:#333;
+}
+
+.review-section{
+margin-top:40px;
+max-width:1100px;
+margin-left:auto;
+margin-right:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.review{
+border-bottom:1px solid #eee;
+padding:15px 0;
+}
+
+.review-name{
+font-weight:bold;
+font-size:16px;
+}
+
+.review-rating{
+color:orange;
+margin-top:3px;
+}
+
+.related-products{
+margin-top:40px;
+max-width:1100px;
+margin-left:auto;
+margin-right:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.related-grid{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.related-card{
+width:180px;
+text-align:center;
+}
+
+.related-card img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:6px;
+}
+
+input, select, textarea{
+padding:8px;
+width:250px;
+}
+
+textarea{
+width:100%;
+height:80px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="/">← Back to Products</a>
+
+<div class="container">
+
+<div class="zoom-container">
+<img src="{{ product.image.url }}">
+</div>
+
+<div class="product-info">
+
+<h1>{{ product.name }}</h1>
+
+<p class="rating">
+⭐ {{ avg_rating|default:"0"|floatformat:1 }} / 5
+</p>
+
+<p class="price">₹ {{ product.price }}</p>
+
+<!-- STOCK -->
+<p class="stock">
+Stock Available: {{ product.stock }}
+</p>
+
+{% if product.stock == 0 %}
+<p class="out-stock">Out of Stock</p>
+{% endif %}
+
+<p>{{ product.description }}</p>
+
+{% if product.stock > 0 %}
+
+<a href="/add-to-cart/{{ product.id }}/">
+<button>Add to Cart</button>
+</a>
+
+{% endif %}
+
+<br>
+
+<a href="/add-to-wishlist/{{ product.id }}/">
+<button>Add to Wishlist</button>
+</a>
+
+</div>
+
+</div>
+
+
+<!-- REVIEWS -->
+
+<div class="review-section">
+
+<h2>⭐ Customer Reviews</h2>
+
+{% for review in reviews %}
+
+<div class="review">
+
+<div class="review-name">{{ review.name }}</div>
+
+<div class="review-rating">
+⭐ {{ review.rating|floatformat:1 }}/5
+</div>
+
+<p>{{ review.comment }}</p>
+
+</div>
+
+{% empty %}
+
+<p>No reviews yet.</p>
+
+{% endfor %}
+
+
+<h3 style="margin-top:30px;">Leave a Review</h3>
+
+<form method="POST" action="/add-review/{{ product.id }}/">
+
+{% csrf_token %}
+
+<input type="text" name="name" placeholder="Your name" required>
+
+<br><br>
+
+<select name="rating">
+
+<option value="5">⭐⭐⭐⭐⭐ (5)</option>
+<option value="4.5">⭐⭐⭐⭐⭐ (4.5)</option>
+<option value="4">⭐⭐⭐⭐ (4)</option>
+<option value="3.5">⭐⭐⭐⭐ (3.5)</option>
+<option value="3">⭐⭐⭐ (3)</option>
+<option value="2.5">⭐⭐⭐ (2.5)</option>
+<option value="2">⭐⭐ (2)</option>
+<option value="1">⭐ (1)</option>
+
+</select>
+
+<br><br>
+
+<textarea name="comment" placeholder="Write your review"></textarea>
+
+<br><br>
+
+<button type="submit">Submit Review</button>
+
+</form>
+
+</div>
+
+
+<!-- RELATED PRODUCTS -->
+
+{% if related_products %}
+
+<div class="related-products">
+
+<h2>Related Products</h2>
+
+<div class="related-grid">
+
+{% for item in related_products %}
+
+<div class="related-card">
+
+<img src="{{ item.image.url }}">
+
+<p><b>{{ item.name }}</b></p>
+
+<p>₹ {{ item.price }}</p>
+
+<a href="/product/{{ item.id }}/">View</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endif %}
+
+
+</body>
+</html>
