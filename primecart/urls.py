@@ -4,10 +4,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# 👇 ADD THIS
+from primecart.views import load_data
+
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
+
+    # 👇 DATA LOAD URL (IMPORTANT)
+    path('load-data/', load_data),
 
     # PRODUCTS
     path('', include('products.urls')),
@@ -28,6 +34,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
 ]
-
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
