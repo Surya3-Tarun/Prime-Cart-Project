@@ -3,80 +3,119 @@
 <head>
 <title>PrimeCart</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 
 body{
-font-family: Arial;
+font-family: 'Poppins', sans-serif;
 margin:0;
 padding:0;
-background:#f5f5f5;
+background:#f8fafc;
 }
 
+/* HEADER */
 .header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:#111;
+background:#0f172a;
 color:white;
-padding:15px 40px;
+padding:18px 50px;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.header h2{
+margin:0;
+font-weight:600;
 }
 
 .header a{
 color:white;
 text-decoration:none;
-margin-left:20px;
+margin-left:25px;
+font-size:14px;
+transition:0.3s;
 }
 
+.header a:hover{
+color:#38bdf8;
+}
+
+/* SEARCH */
 .search-box{
-padding:20px 40px;
+padding:30px 50px;
 position:relative;
+display:flex;
+gap:10px;
 }
 
 .search-box input{
-padding:10px;
-width:300px;
+padding:12px;
+width:350px;
+border-radius:8px;
+border:1px solid #ddd;
+outline:none;
 }
 
 .search-box button{
-padding:10px 20px;
-background:black;
+padding:12px 20px;
+background:#0f172a;
 color:white;
 border:none;
+border-radius:8px;
 cursor:pointer;
+transition:0.3s;
 }
 
+.search-box button:hover{
+background:#1e293b;
+}
+
+/* SEARCH RESULTS */
 #search-results{
 background:white;
 position:absolute;
-width:300px;
-top:60px;
-left:40px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-border-radius:6px;
+width:350px;
+top:80px;
+left:50px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+border-radius:10px;
 z-index:10;
+overflow:hidden;
 }
 
 #search-results div{
-padding:8px;
+padding:10px;
 border-bottom:1px solid #eee;
 }
 
 #search-results div:hover{
-background:#f2f2f2;
+background:#f1f5f9;
 }
 
+/* TITLES */
+.section-title{
+padding-left:50px;
+font-weight:600;
+margin-top:20px;
+}
+
+/* CATEGORIES */
 .categories{
 display:flex;
-gap:30px;
+gap:25px;
 flex-wrap:wrap;
-padding:40px;
+padding:40px 50px;
 }
 
 .category-card{
 width:250px;
 background:white;
-border-radius:10px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
 padding:15px;
 text-align:center;
 cursor:pointer;
@@ -84,55 +123,71 @@ transition:0.3s;
 }
 
 .category-card:hover{
-transform:scale(1.05);
+transform:translateY(-8px);
 }
 
 .category-card img{
 width:100%;
 height:180px;
 object-fit:cover;
-border-radius:8px;
+border-radius:10px;
 }
 
+/* PRODUCTS */
 .container{
 display:flex;
 flex-wrap:wrap;
-gap:30px;
-padding:40px;
+gap:25px;
+padding:40px 50px;
 }
 
 .card{
 background:white;
-padding:20px;
+padding:15px;
 width:250px;
 text-align:center;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+border-radius:15px;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
 }
 
 .card img{
-width:200px;
+width:100%;
 height:200px;
 object-fit:cover;
+border-radius:10px;
 }
 
+.card h3{
+margin:10px 0;
+font-size:18px;
+}
+
+.price{
+color:#16a34a;
+font-weight:bold;
+font-size:18px;
+}
+
+/* BUTTON */
 button{
 padding:10px;
 margin-top:10px;
-background:black;
+background:#0f172a;
 color:white;
 border:none;
 cursor:pointer;
 width:100%;
+border-radius:8px;
+transition:0.3s;
 }
 
 button:hover{
-background:#444;
-}
-
-.price{
-color:green;
-font-weight:bold;
+background:#1e293b;
 }
 
 </style>
@@ -141,35 +196,33 @@ font-weight:bold;
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
-
-<h2>PrimeCart</h2>
+<h2>🛒 PrimeCart</h2>
 
 <div>
 <a href="/wishlist/">❤️ Wishlist ({{ wishlist_count }})</a>
 <a href="/cart/">🛒 Cart ({{ cart_count }})</a>
 <a href="/my-orders/">📦 My Orders</a>
 </div>
-
 </div>
 
+<!-- SEARCH -->
 <div class="search-box">
 
 <form method="GET" action="/">
-
 <input type="text" name="q" id="search-input" placeholder="Search products...">
-
 <button type="submit">Search</button>
-
 </form>
 
 <div id="search-results"></div>
 
 </div>
 
+<!-- SEARCH RESULTS -->
 {% if query %}
 
-<h2 style="padding-left:40px">Search Results for "{{ query }}"</h2>
+<h2 class="section-title">Search Results for "{{ query }}"</h2>
 
 <div class="container">
 
@@ -184,7 +237,6 @@ font-weight:bold;
 {% endif %}
 
 <h3>{{ product.name }}</h3>
-
 <p class="price">₹ {{ product.price }}</p>
 
 <a href="/product/{{ product.id }}/">
@@ -194,16 +246,15 @@ font-weight:bold;
 </div>
 
 {% empty %}
-
-<p style="padding-left:40px">No products found</p>
-
+<p style="padding-left:50px">No products found</p>
 {% endfor %}
 
 </div>
 
 {% endif %}
 
-<h2 style="padding-left:40px">Shop by Categories</h2>
+<!-- CATEGORIES -->
+<h2 class="section-title">Shop by Categories</h2>
 
 <div class="categories">
 
@@ -229,6 +280,7 @@ font-weight:bold;
 
 </div>
 
+<!-- LIVE SEARCH -->
 <script>
 
 const searchInput = document.getElementById("search-input");
